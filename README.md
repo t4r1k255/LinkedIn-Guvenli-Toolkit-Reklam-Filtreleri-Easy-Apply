@@ -1,6 +1,48 @@
 # LinkedIn Güvenli Toolkit
 
+A Tampermonkey userscript for LinkedIn that combines ad filtering, viewed/applied job filters, a vertical control panel and an Easy Apply guard that keeps "follow company" unchecked.
+
 LinkedIn için reklam ve iş ilanı filtrelerini, dikey kontrol panelini ve Easy Apply şirket takibi kontrolünü bir araya getiren Tampermonkey userscripti.
+
+**[English](#english) · [Türkçe](#türkçe)**
+
+---
+
+## English
+
+**Version:** `3.0.4` · **UI language:** Turkish · **Text matching:** Turkish and English
+
+This toolkit replaces my earlier single-purpose LinkedIn scripts ([hide viewed/applied jobs](https://github.com/t4r1k255/LinkedIn-Hide-Viewed-Applied-Jobs), [hide promoted content](https://github.com/t4r1k255/LinkedIn-Promoted-Content-Hide-Tool) and others).
+
+### Features
+
+- **Ad filter:** hides recognized sponsored posts, ad slots and some Premium promotions.
+- **Job filters:** hides viewed and applied job postings, each toggled separately.
+- **Vertical panel:** controls sit on the right edge of the screen; on narrow or short screens the panel moves to the top.
+- **Remembers settings:** ad, job and debug preferences are kept in the browser's `localStorage`.
+- **Easy Apply follow guard:** tries to untick the "follow company" checkbox, re-reads its real `checked` state, and blocks Continue/Submit if it cannot confirm the box is unchecked. It never submits applications for you.
+- **Dynamic page support:** a single rate-limited `MutationObserver` handles content and application steps loaded later.
+
+### Install
+
+1. Install the [Tampermonkey](https://www.tampermonkey.net/) browser extension.
+2. **[Click here to install the script](https://github.com/t4r1k255/LinkedIn-Guvenli-Toolkit-Reklam-Filtreleri-Easy-Apply/raw/main/LinkedIn-Guvenli-Toolkit.user.js)** and confirm with **Install**.
+3. Disable any older LinkedIn scripts or Toolkit copies so only one version runs.
+4. Refresh LinkedIn. The panel should show `Toolkit 3.0.4`.
+
+### Privacy and design
+
+- LinkedIn cards are hidden with CSS and data attributes, not deleted.
+- No `fetch`, `XMLHttpRequest` or `sendBeacon` calls of its own, and no analytics or telemetry.
+- Does not override site-wide functions such as `history` or `attachShadow`, and does not touch React internals.
+
+### Testing
+
+Version 3.0.4 passed a syntax check and 37 local unit tests built on a DOM/event test harness, including 4 targeted regression tests that fail on 3.0.3. These are not live LinkedIn integration tests, and the test files are not published in this repository.
+
+---
+
+## Türkçe
 
 **Sürüm:** `3.0.4` · **Arayüz:** Türkçe · **Metin eşleştirmeleri:** Türkçe ve İngilizce
 
@@ -19,12 +61,11 @@ LinkedIn için reklam ve iş ilanı filtrelerini, dikey kontrol panelini ve Easy
 
 Gerekenler: LinkedIn'e giriş yapılmış bir masaüstü tarayıcı ve [Tampermonkey](https://www.tampermonkey.net/). Diğer userscript yöneticileriyle uyumluluk doğrulanmadı.
 
-1. [Userscript dosyasını](./LinkedIn-Guvenli-Toolkit-3.0.4.user.js) veya [ZIP paketini](./LinkedIn-Guvenli-Toolkit-3.0.4.zip) indirin. ZIP kullandıysanız çıkartın.
-2. Tampermonkey kontrol panelinden **yeni script** oluşturun. Önceki Toolkit sürümü kuruluysa yeni kopya oluşturmak yerine onu düzenleyin.
-3. `.user.js` dosyasını bir metin düzenleyicide açın. Kodun tamamını Tampermonkey editörüne, mevcut içeriğin yerine yapıştırın. ZIP'teki `.txt` dosyası da aynı kodu içerir.
-4. Kaydedin ve scripti etkinleştirin.
-5. Eski ayrı LinkedIn scriptlerini ve diğer Toolkit kopyalarını kapatın. **Yalnızca tek Toolkit sürümü açık kalsın.**
-6. LinkedIn sekmesini yenileyin. Gerekirse `Ctrl+Shift+R` kullanın; panelde `Toolkit 3.0.4` görünmelidir.
+1. **[Scripti kurmak için buraya tıkla](https://github.com/t4r1k255/LinkedIn-Guvenli-Toolkit-Reklam-Filtreleri-Easy-Apply/raw/main/LinkedIn-Guvenli-Toolkit.user.js)** ve Tampermonkey'in açtığı pencerede **Install / Yükle**'ye bas. Önceki Toolkit sürümü kuruluysa Tampermonkey onu günceller.
+2. Eski ayrı LinkedIn scriptlerini ve diğer Toolkit kopyalarını kapat. **Yalnızca tek Toolkit sürümü açık kalsın.**
+3. LinkedIn sekmesini yenile. Gerekirse `Ctrl+Shift+R` kullan; panelde `Toolkit 3.0.4` görünmelidir.
+
+Elle kurmak istersen: Tampermonkey'de yeni script oluştur, [`LinkedIn-Guvenli-Toolkit.user.js`](./LinkedIn-Guvenli-Toolkit.user.js) dosyasının tamamını yapıştır ve kaydet.
 
 Yenileme, açık başvuru formundaki kaydedilmemiş bilgileri sıfırlayabilir. Script oluşturma adımları için [Tampermonkey kurulum yönergelerine](https://www.tampermonkey.net/faq.php?locale=en&q=Q102) bakabilirsiniz.
 
@@ -85,18 +126,17 @@ Bu isteklerin kaynağı kesinleştirilmedi ve `3.0.4` bunları giderme garantisi
 
 Testler DOM ve olay akışını modelleyen bir test düzeneği kullanır. **Gerçek tarayıcı, gerçek React veya canlı LinkedIn entegrasyon testi değildir.**
 
-ZIP içindeki dosyaları çıkarttıktan sonra, Node.js kurulu bir ortamda paket kökünden çalıştırın:
+Test dosyaları bu repoda yayımlanmamıştır; sözdizimi kontrolünü yerelde şöyle yapabilirsin:
 
 ```bash
-node --check LinkedIn-Guvenli-Toolkit-3.0.4.user.js
-node --test tests/follow-core.test.cjs
+node --check LinkedIn-Guvenli-Toolkit.user.js
 ```
 
 ## Katkı
 
 Sorun bildirirken script sürümünü, tarayıcı ve Tampermonkey sürümünü, sayfa türünü, beklenen/gerçek davranışı ve kişisel bilgilerden arındırılmış ilgili DOM parçasını ekleyin. Değişikliklerde mevcut testleri çalıştırın; yeni davranış için uygun regresyon testini genişletin.
 
-## Lisans
+## License · Lisans
 
 Userscript meta verisinde lisans **MIT**, yazar **t4r1k255** olarak belirtilmiştir.
 
